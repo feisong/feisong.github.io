@@ -51,19 +51,19 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="description" content="本文主要结合上一篇介绍的同步异步的概念，介绍一下ios系统提供的两个常用队列：主队列和全局队列，并记录一下我在学习中存在的疑惑和最终探索答案的过程。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2015/12/21/hello-world/index.html">
+<meta property="og:title" content="GCD主队列和全局队列">
+<meta property="og:url" content="http://yoursite.com/2015/12/21/GCD主队列和全局队列/index.html">
 <meta property="og:site_name" content="feisong">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
-<meta property="og:updated_time" content="2015-12-21T02:05:04.000Z">
+<meta property="og:description" content="本文主要结合上一篇介绍的同步异步的概念，介绍一下ios系统提供的两个常用队列：主队列和全局队列，并记录一下我在学习中存在的疑惑和最终探索答案的过程。">
+<meta property="og:image" content="http://img.blog.csdn.net/20151213154208532">
+<meta property="og:image" content="http://img.blog.csdn.net/20151213155527874">
+<meta property="og:image" content="http://img.blog.csdn.net/20151213160435009">
+<meta property="og:updated_time" content="2015-12-21T06:46:22.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="twitter:title" content="GCD主队列和全局队列">
+<meta name="twitter:description" content="本文主要结合上一篇介绍的同步异步的概念，介绍一下ios系统提供的两个常用队列：主队列和全局队列，并记录一下我在学习中存在的疑惑和最终探索答案的过程。">
 
 
 
@@ -75,7 +75,7 @@ Quick">
   };
 </script>
 
-  <title> Hello World | feisong </title>
+  <title> GCD主队列和全局队列 | feisong </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -205,7 +205,7 @@ Quick">
             
             
               
-                Hello World
+                GCD主队列和全局队列
               
             
           </h1>
@@ -214,7 +214,7 @@ Quick">
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-12-21T10:05:04+08:00" content="2015-12-21">
+            <time itemprop="dateCreated" datetime="2015-12-21T14:37:33+08:00" content="2015-12-21">
               2015-12-21
             </time>
           </span>
@@ -225,8 +225,8 @@ Quick">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/12/21/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/21/hello-world/" itemprop="commentsCount"></span>
+                <a href="/2015/12/21/GCD主队列和全局队列/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/21/GCD主队列和全局队列/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -245,15 +245,22 @@ Quick">
       
 
       
-        <span itemprop="articleBody"><p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start"><a href="#Quick_Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create_a_new_post"><a href="#Create_a_new_post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server"><a href="#Run_server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files"><a href="#Generate_static_files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites"><a href="#Deploy_to_remote_sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <span itemprop="articleBody"><p>本文主要结合上一篇介绍的同步异步的概念，介绍一下ios系统提供的两个常用队列：主队列和全局队列，并记录一下我在学习中存在的疑惑和最终探索答案的过程。<br><a id="more"></a><br> （1）主队列<br> 主队列是GCD自带的一种特殊的串行队列，放在主队列中得任务，都会放到主线程中执行。<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">dispatch_get_main_queue</span><span class="params">()</span></span></span><br></pre></td></tr></table></figure></p>
+<p>获取方式很简单，下面主要研究一下在主队列中的同步和异步问题(重点)：</p>
+<p><1>同步<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="built_in">dispatch_sync</span>(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"sync----%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></1></p>
+<p>打印结果如下：<img src="http://img.blog.csdn.net/20151213154208532" alt="主队列 同步任务"><br>你可能会奇怪：为什么只有一条打印记录？其实这里出现了死锁，所以后面的打印，包括同步任务里面的打印都无法执行，为什么会发生死锁呢，关键问题出现在设置的dispatch_sync方法里面的第一个参数，下面来分析一下。<br>首先，系统执行时，肯定是从主线程执行第一个打印，之后执行到dispatch_sync方法，这是同步方法，这个方法第一个参数是dispatch_get_main_queue()，所以会将block的打印任务放到主队列中等待执行。此时，主线程阻塞在这，等待同步任务的执行。但是，主队列串行队列，一个任务执行结束才能取出下一个任务执行，而此时当前的任务被阻塞了，无法结束，所以后一个任务（即刚刚添加的同步任务）必须等待前一个任务结束后才能执行。此时，主线程等待着同步任务执行结束返回，而同步任务等待着主队列的前一个任务（即当前被阻塞的任务）执行结束后再执行。所以出现了死锁的现象。我们应该尽量避免这种情况的发生。那么如果换成dispatch_async方法，是否就不会出现死锁了呢？</p>
+<p><2>异步<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"async----%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></2></p>
+<p>打印结果如下：<img src="http://img.blog.csdn.net/20151213155527874" alt="主队列 异步任务"><br>显然，这种情况下，所有的打印都能完成，简单分析一下：主线程首先执行第一个打印，执行到dispatch_async方法时，往主队列添加了一个异步任务，此时并不阻塞主线程，主线程立刻返回执行后面的打印。主线程当前的任务完成了，然后从主队列取出下一个任务（刚刚添加的异步任务）来执行，完成打印async—-。所以不会出现死锁现象。<br>（2）全局队列<br>全局队列类似于上一篇所介绍的并行队列，再此不在赘述：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dispatch_get_global_queue(<span class="keyword">long</span> identifier, <span class="keyword">unsigned</span> <span class="keyword">long</span> flags)</span><br></pre></td></tr></table></figure></p>
+<p>第一个参数identifier: 在ios7中代表队列优先级（priority），在ios8及以后代表服务质量（A quality of service），一般设置为DISPATCH_QUEUE_PRIORITY_DEFAULT即可。<br>两者的对应关系如下：</p>
+<ul>
+<li>DISPATCH_QUEUE_PRIORITY_HIGH:         QOS_CLASS_USER_INITIATED</li>
+<li>DISPATCH_QUEUE_PRIORITY_DEFAULT:      QOS_CLASS_DEFAULT</li>
+<li>DISPATCH_QUEUE_PRIORITY_LOW:          QOS_CLASS_UTILITY</li>
+<li><p>DISPATCH_QUEUE_PRIORITY_BACKGROUND:   QOS_CLASS_BACKGROUND<br>第二个参数flags:保留参数，以便以后使用，一般传0即可。<br>在全局队列中，同步任务是否也会发生死锁现象呢？<br><1>同步</1></p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="built_in">dispatch_sync</span>(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, <span class="number">0</span>), ^&#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"sync----%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果如下：<img src="http://img.blog.csdn.net/20151213160435009" alt="全局队列 同步任务"><br>从打印结果来看，并没有死锁现象，仔细分析一下：主线程先执行第一句打印，然后执行dispatch_sync方法，往全局队列中添加一个同步任务，此时主线程应该阻塞住，等待全局队列中同步任务的执行完毕，而全局队列dispatch_sync方法并不会创建新线程，那肯定需要在主线程执行（上一篇的结论），可是主线程已经阻塞了，所以按理说此时应该发生死锁，可是为什么从打印结果看它确实是在主线程执行的同步任务，而且并没有发生死锁现象呢？<br>对应这个问题，我利用前面和上面的知识都无法解释，我在网上查了很多，都没有提到过这个问题，难道是我上面的分析有问题，按照上面的分析，那所有的同步方法，无论是自定义队列还是全局队列、主队列，同步任务都会出现死锁现象。难道我钻了牛角尖。没有找到中文的解释，我去官方文档是查，也一无所获，最后我无意的点进了dispatch_sync的源代码中，在该方法上面的注释中发现了这么一句话：  <strong>As an optimization, dispatch_sync() invokes the block on the current thread when possible.</strong> 大致意思是：苹果系统内部做了优化，将所有的dispatch_sync()方法中block的执行都放在当前的线程中，在我们这里也就是主线程中。这也解释了上一篇留下的一个问题：为什么所有的同步方法都在主线程中执行 ？可是，这个解释，好像并不能回答为什么这里没有发生死锁的问题？我也一直没有找到合理的解释，如果哪位有比较合理的解释，麻烦给我留言。<br>我个人的猜测：是否会在需要执行dispatch_sync()方法时，将当前任务先挂起，只要能取出要执行的任务来就让主线程先执行，之后再来执行挂起任务。这个猜测似乎和主队列同步方法发生死锁的解释不矛盾，主队列中的任务只能前一个执行完后一个才能取出来执行，所以在主队列中后面的同步任务无法取出来，自然会发生死锁。而全局队列中，同步任务就是最前面的任务，所以能取出来，所以可以由主线程来执行，执行后主线程可以返回执行后面的操作。</p>
+</li>
+</ul>
 </span>
       
     </div>
@@ -265,13 +272,13 @@ Quick">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2015/12/21/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/12/21/GCD主队列和全局队列/" rel="prev" title="GCD主队列和全局队列">
-                GCD主队列和全局队列 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -298,8 +305,8 @@ Quick">
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/12/21/hello-world/"
-           data-title="Hello World" data-url="http://yoursite.com/2015/12/21/hello-world/">
+      <div class="ds-thread" data-thread-key="2015/12/21/GCD主队列和全局队列/"
+           data-title="GCD主队列和全局队列" data-url="http://yoursite.com/2015/12/21/GCD主队列和全局队列/">
       </div>
     
   </div>
@@ -415,7 +422,7 @@ Quick">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick_Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create_a_new_post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run_server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate_static_files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy_to_remote_sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <p class="post-toc-empty">此文章未包含目录</p>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
