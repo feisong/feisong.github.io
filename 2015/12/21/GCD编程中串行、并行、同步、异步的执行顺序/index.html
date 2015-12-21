@@ -1,0 +1,695 @@
+<!doctype html>
+<html class="theme-next   use-motion ">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+
+
+
+
+<meta name="description" content="title: GCD编程中串行、并行、同步、异步的执行顺序date: 2015-12-21 14:51:56tags:GCD 串行 并行 同步 异步串行队列、并行队列、同步、异步是gcd编程中四个非常重要的概念，它们的组合会产生多种不同的执行顺序，在本文，我主要通过代码来罗列一下所有的可能产生的结果，并根据执行结果总结一下gcd编程的一些特点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="feisong">
+<meta property="og:url" content="http://yoursite.com/2015/12/21/GCD编程中串行、并行、同步、异步的执行顺序/index.html">
+<meta property="og:site_name" content="feisong">
+<meta property="og:description" content="title: GCD编程中串行、并行、同步、异步的执行顺序date: 2015-12-21 14:51:56tags:GCD 串行 并行 同步 异步串行队列、并行队列、同步、异步是gcd编程中四个非常重要的概念，它们的组合会产生多种不同的执行顺序，在本文，我主要通过代码来罗列一下所有的可能产生的结果，并根据执行结果总结一下gcd编程的一些特点。">
+<meta property="og:image" content="http://img.blog.csdn.net/20151213131430086">
+<meta property="og:image" content="http://img.blog.csdn.net/20151213131530541">
+<meta property="og:image" content="http://img.blog.csdn.net/20151213133151994">
+<meta property="og:image" content="http://img.blog.csdn.net/20151213134033448">
+<meta property="og:image" content="http://img.blog.csdn.net/20151213135335503">
+<meta property="og:image" content="http://img.blog.csdn.net/20151213140542249">
+<meta property="og:image" content="http://img.blog.csdn.net/20151213142924337">
+<meta property="og:image" content="http://img.blog.csdn.net/20151213144311387">
+<meta property="og:updated_time" content="2015-12-21T06:53:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="feisong">
+<meta name="twitter:description" content="title: GCD编程中串行、并行、同步、异步的执行顺序date: 2015-12-21 14:51:56tags:GCD 串行 并行 同步 异步串行队列、并行队列、同步、异步是gcd编程中四个非常重要的概念，它们的组合会产生多种不同的执行顺序，在本文，我主要通过代码来罗列一下所有的可能产生的结果，并根据执行结果总结一下gcd编程的一些特点。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post',
+    motion: true
+  };
+</script>
+
+  <title>  | feisong </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">feisong</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-question-circle fa-fw"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2015-12-21T14:53:59+08:00" content="2015-12-21">
+              2015-12-21
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/12/21/GCD编程中串行、并行、同步、异步的执行顺序/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/21/GCD编程中串行、并行、同步、异步的执行顺序/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>title: GCD编程中串行、并行、同步、异步的执行顺序<br>date: 2015-12-21 14:51:56<br>tags:GCD 串行 并行 同步 异步<br>串行队列、并行队列、同步、异步是gcd编程中四个非常重要的概念，它们的组合会产生多种不同的执行顺序，在本文，我主要通过代码来罗列一下所有的可能产生的结果，并根据执行结果总结一下gcd编程的一些特点。<br><a id="more"></a><br>（1）串行队列 异步任务</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)test&#123;</span><br><span class="line">    <span class="built_in">dispatch_queue_t</span> q = dispatch_queue_create(<span class="string">"fs"</span>, DISPATCH_QUEUE_SERIAL);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"start--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">dispatch_async</span>(q, ^&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"async--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"end--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果如下:<img src="http://img.blog.csdn.net/20151213131430086" alt="串行队列 异步任务"><br>上面代码创建了一个串行队列，然后往串行队列中添加了10个异步任务，从打印结果可以看出：先在主线程中执行打印start—，然后将异步任务添加到串行队列中（只是添加，并没有立即执行），之后在主线程打印end—，最后才会从串行队列中依次取出一个任务，并在子线程中执行，因此异步任务打印是有序的。所以， 主线程会在执行完dispatch_async方法后，立即返回执行主线程后续相关操作，主线程任务执行完毕后，才会在子线程中依次执行异步任务。由于串行队列中的任务是依次取出来执行的，即前一个任务在子线程执行完毕后，才能取出后一个任务来执行，所以只需要创建一个子线程即可。<br>结论：串行队列 异步任务，会创建子线程，且只创建一个子线程，异步任务执行是有序的。<br>（2）串行队列 同步任务</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)test2&#123;</span><br><span class="line">    <span class="built_in">dispatch_queue_t</span> q = dispatch_queue_create(<span class="string">"fs"</span>, DISPATCH_QUEUE_SERIAL);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"start--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">dispatch_sync</span>(q, ^&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"sync--%@---%d"</span>,[<span class="built_in">NSThread</span> currentThread],i);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"end--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果如下：<img src="http://img.blog.csdn.net/20151213131530541" alt="串行队列 同步任务"><br>上面代码创建了一个串行队列，然后往串行队列中添加了10个同步任务，从打印结果可以看出：先在主线程中执行打印start—，然后在主线程依次打印同步任务，最后在主线程打印end—。所以，主线程在执行dispatch_sync方法后，并没有立刻返回，而是阻塞了当前线程，去等待dispatch_sync方法里面的block执行完毕，等到for循环里面所有同步任务执行完毕后，才返回去执行后面的end—的打印操作，所有的打印都是在主线程完成。<br>结论： 串行队列 同步任务，不创建新线程，同步任务执行是有序的。<br>问题：细心的你可能发现一个问题：既然阻塞了当前线程（主线程），为什么同步任务里面的block还能在主线程中打印？问题答案会在下一篇文章中给出。<br>（3）并行队列 异步任务</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)test3&#123;</span><br><span class="line">    <span class="built_in">dispatch_queue_t</span> q = dispatch_queue_create(<span class="string">"fs"</span>, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"start--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">dispatch_async</span>(q, ^&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"async--%@---%d"</span>,[<span class="built_in">NSThread</span> currentThread],i);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"end--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果如下：<img src="http://img.blog.csdn.net/20151213133151994" alt="并行队列 异步任务"><br>上面代码创建了一个并行队列，然后往串行队列中添加了10个异步任务，从打印结果可以看出：先在主线程中执行打印start—，然后将异步任务添加到并行队列中（只是添加，并没有立即执行），之后立刻返回，在主线程打印end—，最后才会从并行队列中依次取出多个任务，并创建多个子线程来执行（至于创建几个子线程由系统决定），由于每个任务执行时间不同，子线程获得CPU的时间也不同，所以异步任务打印结果的顺序也不同，而且每次打印的同步任务结果都不一样。<br>结论：并行队列 异步任务 创建子线程，且多个子线程，异步任务打印结果无序。<br>（4）并行队列 同步任务</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)test4&#123;</span><br><span class="line">    <span class="built_in">dispatch_queue_t</span> q = dispatch_queue_create(<span class="string">"fs"</span>, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"start--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">dispatch_sync</span>(q, ^&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"sync--%@---%d"</span>,[<span class="built_in">NSThread</span> currentThread],i);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"end--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果如下：<img src="http://img.blog.csdn.net/20151213134033448" alt="并行队列 同步任务"><br>上面代码创建了一个并行队列，然后往串行队列中添加了10个同步任务，从打印结果可以看出：先在主线程中执行打印start—，然后在主线程依次打印同步任务，最后在主线程打印end—。所以，主线程在执行dispatch_sync方法后，并没有立刻返回，而是阻塞了当前线程，去等待dispatch_sync方法里面的block执行完毕，等到for循环里面所有同步任务执行完毕后，才返回去执行后面的end—的打印操作，所有的打印都是在主线程完成。<br>结论： 并行队列 同步任务，不创建新线程，同步任务执行是有序的。<br>总结上面的四种情况得出结论：<br>（1）同步、异步决定是否创建子线程，同步任务不创建子线程，都是在主线程中执行，异步任务创建子线程。<br>（2）串行、并行决定创建子线程的个数，串行创建一个子线程，并行创建多个子线程（具体几个由系统决定）。<br>下面来点稍微复杂的情况：<br>（5）串行队列中先异步再同步</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)test5&#123;</span><br><span class="line">    <span class="built_in">dispatch_queue_t</span> q = dispatch_queue_create(<span class="string">"fs"</span>, DISPATCH_QUEUE_SERIAL);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"start--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">dispatch_async</span>(q, ^&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"async--%@---%d"</span>,[<span class="built_in">NSThread</span> currentThread],i);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"end1--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">dispatch_sync</span>(q, ^&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"sync--%@---%d"</span>,[<span class="built_in">NSThread</span> currentThread],i);         </span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"end2--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果如下：<img src="http://img.blog.csdn.net/20151213135335503" alt="串行队列中先异步再同步"><br>上面代码创建了一个串行队列，然后往串行队列中添加了10个异步任务，再添加10个同步任务，从打印结果可以看出：先在主线程中执行打印start—，然后将异步任务添加到串行队列中（只是添加，并没有立即执行），之后在主线程打印end1—，再然后往串行队列里添加了1个同步任务，此时主线程堵塞，等待串行队列里地同步任务执行完毕。此时创建一个子线程开始依次执行异步任务，异步任务结束后，在主线程中执行同步任务（上面的结论）。1个同步任务执行完后（此时串行队列里没有任务了），主线程返回，for循环继续往串行队列里添加1个同步任务，此时主线程继续阻塞，等待串行队列里同步任务执行完毕，此时主线程执行这个同步任务，执行完毕后，主线程返回继续for循环……。等for循环结束后，最后在主线程执行打印end2—的操作。<br>（6）串行队列中先同步再异步</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)test6&#123;</span><br><span class="line">    <span class="built_in">dispatch_queue_t</span> q = dispatch_queue_create(<span class="string">"fs"</span>, DISPATCH_QUEUE_SERIAL);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"start--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">dispatch_sync</span>(q, ^&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"sync--%@---%d"</span>,[<span class="built_in">NSThread</span> currentThread],i);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"end1--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">dispatch_async</span>(q, ^&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"async--%@---%d"</span>,[<span class="built_in">NSThread</span> currentThread],i);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"end2--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果如下：<img src="http://img.blog.csdn.net/20151213140542249" alt="串行队列中先同步再异步"><br>上面代码创建了一个串行队列，然后往串行队列中添加了10个同步任务，再添加10个异步任务，从打印结果可以看出：先在主线程中执行打印start—，然后往串行队列里添加了1个同步任务，此时主线程堵塞，等待串行队列里地同步任务执行完毕。此时创建一个子线程开始依次执行串行队列的任务，在主线程中执行同步任务（上面的结论）。1个同步任务执行完后（此时串行队列里没有任务了），主线程返回，for循环继续往串行队列里添加1个同步任务，此时主线程继续阻塞，等待串行队列里同步任务执行完毕，此时主线程执行这个同步任务，执行完毕后，主线程返回继续for循环……。等for循环结束后，在主线程打印end1—，然后执行到dispatch_async往串行队列里添加异步任务，并立即返回，for循环结束后，串行队列里有10个异步任务，此时主线程继续往下执行打印end2—的操作。之后开始创建子线程依次执行串行队列里地异步任务。<br>（7）并行队列中先异步再同步</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)test7&#123;</span><br><span class="line">    <span class="built_in">dispatch_queue_t</span> q = dispatch_queue_create(<span class="string">"fs"</span>, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"start--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">dispatch_async</span>(q, ^&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"async--%@---%d"</span>,[<span class="built_in">NSThread</span> currentThread],i);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"end1--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">dispatch_sync</span>(q, ^&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"sync--%@---%d"</span>,[<span class="built_in">NSThread</span> currentThread],i);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"end2--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果如下：<img src="http://img.blog.csdn.net/20151213142924337" alt="并行队列中先异步再同步"><br>上面代码创建了一个并行队列，然后往并行队列中添加了10个异步任务和10个同步任务，上面只是某一次的打印结果，每次的打印结果都不一样，从打印结果可以看出：由于是并行队列，会开启多个子线程执行异步任务，所以异步任务的打印结果是无序的，而同步任务由于都是在主线程中执行，所有总体是有序的。而且同步与异步任务是交叉着执行完毕的。<br>（8）并行队列中先同步再异步<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)test8&#123;</span><br><span class="line">    <span class="built_in">dispatch_queue_t</span> q = dispatch_queue_create(<span class="string">"fs"</span>, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"start--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">dispatch_sync</span>(q, ^&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"sync--%@---%d"</span>,[<span class="built_in">NSThread</span> currentThread],i);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"end1--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">dispatch_async</span>(q, ^&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"async--%@---%d"</span>,[<span class="built_in">NSThread</span> currentThread],i);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"end2--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>打印结果如下：<img src="http://img.blog.csdn.net/20151213144311387" alt="并行队列中先同步再异步"><br>上面代码创建了一个并行队列，然后往并行队列中添加了10个同步任务和10个异步任务，每次的打印结果也不一定一样，从打印结果可以看出：都是先有序的执行完同步任务，再无序的执行异步任务。没有交叉执行完的想象，原因在于先添加的同步任务，没添加一个同步任务会堵塞主线程，等待同步任务执行完毕，所以会依次在主线程执行同步任务，for循环结束后，此时并行队列里为空，之后再往并行队列中添加了10个异步任务，此时没有堵塞主线程，主线程一直往下执行打印end2—，此时开启多个子线程来执行执行异步任务，所以执行完的顺序是未知的。<br>以上是对GCD编程中串行、并行、同步、异步的执行顺序的一个简单分析，其中还留了一个问题，这个问题将在下一篇文章中给出答案，本篇主要是自定义的串并行队列，下一篇主要分析一下ios系统给我们提供的一些队列，最常用的是主队列和全局队列。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/12/21/GCD主队列和全局队列/" rel="next" title="GCD主队列和全局队列">
+                <i class="fa fa-chevron-left"></i> GCD主队列和全局队列
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+        </div>
+
+        
+
+
+        
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/12/21/GCD编程中串行、并行、同步、异步的执行顺序/"
+           data-title="" data-url="http://yoursite.com/2015/12/21/GCD编程中串行、并行、同步、异步的执行顺序/">
+      </div>
+    
+  </div>
+
+
+      </div>
+
+      
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/fs.jpg" alt="feisong" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">feisong</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">ant on the way</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/feisong" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> github
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2451355424/profile?topnav=1&wvr=6&is_all=1" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/fd5245a61aea/timeline" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> 简书
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+      
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">feisong</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"feisong"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+
+    
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
+
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    motionMiddleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
+
+  
+  
+
+  
+  
+
+</body>
+</html>
