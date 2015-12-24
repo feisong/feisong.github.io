@@ -229,8 +229,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/12/21/hello-world/" itemprop="url">
-                  Hello World
+                <a class="post-title-link" href="/2015/12/24/iOS开发中copy和retain的区别/" itemprop="url">
+                  iOS开发中copy和retain的区别
                 </a>
               
             
@@ -240,8 +240,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-12-21T15:28:20+08:00" content="2015-12-21">
-              2015-12-21
+            <time itemprop="dateCreated" datetime="2015-12-24T21:25:19+08:00" content="2015-12-24">
+              2015-12-24
             </time>
           </span>
 
@@ -251,8 +251,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/12/21/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/21/hello-world/" itemprop="commentsCount"></span>
+                <a href="/2015/12/24/iOS开发中copy和retain的区别/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/24/iOS开发中copy和retain的区别/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -272,9 +272,10 @@
 
       
         
-          <p>Welcome to <a href="http://hexo.io/">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.<br>
+          <p>在ios开发中我们一般都这么定义：@property (nonatomic,copy) NSString <em>name，而不这么定义：@property (nonatomic,retain) NSString </em>name，两者的差别就在一个使用copy，一个使用retain。<br>一直以来都不明白为什么，今天通过查阅资料总算弄明白了，所以记录一下。<br>在说明白retain和copy的区别，首先需要明白深复制和浅复制的概念。<br>1 <strong>深复制</strong>：内容拷贝,源对象和副本对象指的是两个不同的对象,源对象引用计数器不变,副本对象引用计数器为1<br>2 <strong>浅复制</strong>：指针拷贝,源对象和副本对象指的都是同一个对象,对象引用计数器+1,相当于retain</p>
+<p><strong>只有不可变对象创建不可变副本(copy)才是浅复制，其它的都是深复制</strong><br>上面的结论至关重要，大家可以对NSString和NSMutableString分别测试，在此不再赘述。<br>下面通过实验来说明copy和retain的区别。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/12/21/hello-world/#more" rel="contents">
+            <a class="btn" href="/2015/12/24/iOS开发中copy和retain的区别/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -338,7 +339,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">4</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -352,7 +353,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">11</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

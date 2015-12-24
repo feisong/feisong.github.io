@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="GCD,主队列,全局队列," />
+  <meta name="keywords" content="MAC,MySql," />
 
 
 
@@ -51,22 +51,20 @@
 
 
 
-<meta name="description" content="（1）主队列 主队列是GCD自带的一种特殊的串行队列，放在主队列中得任务，都会放到主线程中执行。1dispatch_get_main_queue()
-获取方式很简单，下面主要研究一下在主队列中的同步和异步问题(重点)：">
+<meta name="description" content="第一次在mac上安装mysql，首先从官网上下了最新版的mysql，下载的是dmg的，下载完成后直接根据提示下一步下一步就完成安装了。在最后安装成功后有个弹框：大致意思是帮我设置了一个临时的密码zYRlG3Dw6h=d（随机生成的），如果要修改可以去mysql手册查询重置方法。之后我设置了环境变量：在命令行输入   vim ~/.bash_profile ，在打开的.bash_profile里面输">
 <meta property="og:type" content="article">
-<meta property="og:title" content="GCD主队列和全局队列">
-<meta property="og:url" content="http://yoursite.com/2015/12/21/GCD主队列和全局队列/index.html">
+<meta property="og:title" content="MAC下安装MySql遇到的问题">
+<meta property="og:url" content="http://yoursite.com/2015/12/24/MAC下安装MySql遇到的问题/index.html">
 <meta property="og:site_name" content="feisong">
-<meta property="og:description" content="（1）主队列 主队列是GCD自带的一种特殊的串行队列，放在主队列中得任务，都会放到主线程中执行。1dispatch_get_main_queue()
-获取方式很简单，下面主要研究一下在主队列中的同步和异步问题(重点)：">
-<meta property="og:image" content="http://img.blog.csdn.net/20151213154208532">
-<meta property="og:image" content="http://img.blog.csdn.net/20151213155527874">
-<meta property="og:image" content="http://img.blog.csdn.net/20151213160435009">
-<meta property="og:updated_time" content="2015-12-21T12:36:40.000Z">
+<meta property="og:description" content="第一次在mac上安装mysql，首先从官网上下了最新版的mysql，下载的是dmg的，下载完成后直接根据提示下一步下一步就完成安装了。在最后安装成功后有个弹框：大致意思是帮我设置了一个临时的密码zYRlG3Dw6h=d（随机生成的），如果要修改可以去mysql手册查询重置方法。之后我设置了环境变量：在命令行输入   vim ~/.bash_profile ，在打开的.bash_profile里面输">
+<meta property="og:image" content="http://img.blog.csdn.net/20151207200337702">
+<meta property="og:image" content="http://img.blog.csdn.net/20151207202018644">
+<meta property="og:image" content="http://img.blog.csdn.net/20151207202622016">
+<meta property="og:image" content="http://img.blog.csdn.net/20151207205508233">
+<meta property="og:updated_time" content="2015-12-24T13:23:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GCD主队列和全局队列">
-<meta name="twitter:description" content="（1）主队列 主队列是GCD自带的一种特殊的串行队列，放在主队列中得任务，都会放到主线程中执行。1dispatch_get_main_queue()
-获取方式很简单，下面主要研究一下在主队列中的同步和异步问题(重点)：">
+<meta name="twitter:title" content="MAC下安装MySql遇到的问题">
+<meta name="twitter:description" content="第一次在mac上安装mysql，首先从官网上下了最新版的mysql，下载的是dmg的，下载完成后直接根据提示下一步下一步就完成安装了。在最后安装成功后有个弹框：大致意思是帮我设置了一个临时的密码zYRlG3Dw6h=d（随机生成的），如果要修改可以去mysql手册查询重置方法。之后我设置了环境变量：在命令行输入   vim ~/.bash_profile ，在打开的.bash_profile里面输">
 
 
 
@@ -78,7 +76,7 @@
   };
 </script>
 
-  <title> GCD主队列和全局队列 | feisong </title>
+  <title> MAC下安装MySql遇到的问题 | feisong </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -218,7 +216,7 @@
             
             
               
-                GCD主队列和全局队列
+                MAC下安装MySql遇到的问题
               
             
           </h1>
@@ -227,8 +225,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-12-21T14:37:33+08:00" content="2015-12-21">
-              2015-12-21
+            <time itemprop="dateCreated" datetime="2015-12-24T21:20:36+08:00" content="2015-12-24">
+              2015-12-24
             </time>
           </span>
 
@@ -238,8 +236,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/12/21/GCD主队列和全局队列/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/21/GCD主队列和全局队列/" itemprop="commentsCount"></span>
+                <a href="/2015/12/24/MAC下安装MySql遇到的问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/24/MAC下安装MySql遇到的问题/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -258,23 +256,7 @@
       
 
       
-        <span itemprop="articleBody"><h2 id="uFF081_uFF09_u4E3B_u961F_u5217"><a href="#uFF081_uFF09_u4E3B_u961F_u5217" class="headerlink" title="（1）主队列"></a>（1）主队列</h2><p> 主队列是GCD自带的一种特殊的串行队列，放在主队列中得任务，都会放到主线程中执行。<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">dispatch_get_main_queue</span><span class="params">()</span></span></span><br></pre></td></tr></table></figure></p>
-<p>获取方式很简单，下面主要研究一下在主队列中的同步和异步问题(重点)：<br><a id="more"></a></p>
-<h3 id="3C1_3E_u540C_u6B65"><a href="#3C1_3E_u540C_u6B65" class="headerlink" title="<1>同步"></a><1>同步</1></h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="built_in">dispatch_sync</span>(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"sync----%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>打印结果如下：<img src="http://img.blog.csdn.net/20151213154208532" alt="主队列 同步任务"><br>你可能会奇怪：为什么只有一条打印记录？其实这里出现了死锁，所以后面的打印，包括同步任务里面的打印都无法执行，为什么会发生死锁呢，关键问题出现在设置的dispatch_sync方法里面的第一个参数，下面来分析一下。<br>首先，系统执行时，肯定是从主线程执行第一个打印，之后执行到dispatch_sync方法，这是同步方法，这个方法第一个参数是dispatch_get_main_queue()，所以会将block的打印任务放到主队列中等待执行。此时，主线程阻塞在这，等待同步任务的执行。但是，主队列串行队列，一个任务执行结束才能取出下一个任务执行，而此时当前的任务被阻塞了，无法结束，所以后一个任务（即刚刚添加的同步任务）必须等待前一个任务结束后才能执行。此时，主线程等待着同步任务执行结束返回，而同步任务等待着主队列的前一个任务（即当前被阻塞的任务）执行结束后再执行。所以出现了死锁的现象。我们应该尽量避免这种情况的发生。那么如果换成dispatch_async方法，是否就不会出现死锁了呢？</p>
-<h3 id="3C2_3E_u5F02_u6B65"><a href="#3C2_3E_u5F02_u6B65" class="headerlink" title="<2>异步"></a><2>异步</2></h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"async----%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>打印结果如下：<img src="http://img.blog.csdn.net/20151213155527874" alt="主队列 异步任务"><br>显然，这种情况下，所有的打印都能完成，简单分析一下：主线程首先执行第一个打印，执行到dispatch_async方法时，往主队列添加了一个异步任务，此时并不阻塞主线程，主线程立刻返回执行后面的打印。主线程当前的任务完成了，然后从主队列取出下一个任务（刚刚添加的异步任务）来执行，完成打印async—-。所以不会出现死锁现象。</p>
-<h2 id="uFF082_uFF09_u5168_u5C40_u961F_u5217"><a href="#uFF082_uFF09_u5168_u5C40_u961F_u5217" class="headerlink" title="（2）全局队列"></a>（2）全局队列</h2><p>全局队列类似于上一篇所介绍的并行队列，再此不在赘述：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dispatch_get_global_queue(<span class="keyword">long</span> identifier, <span class="keyword">unsigned</span> <span class="keyword">long</span> flags)</span><br></pre></td></tr></table></figure></p>
-<p>第一个参数identifier: 在ios7中代表队列优先级（priority），在ios8及以后代表服务质量（A quality of service），一般设置为DISPATCH_QUEUE_PRIORITY_DEFAULT即可。<br>两者的对应关系如下：</p>
-<ul>
-<li>DISPATCH_QUEUE_PRIORITY_HIGH:         QOS_CLASS_USER_INITIATED</li>
-<li>DISPATCH_QUEUE_PRIORITY_DEFAULT:      QOS_CLASS_DEFAULT</li>
-<li>DISPATCH_QUEUE_PRIORITY_LOW:          QOS_CLASS_UTILITY</li>
-<li><p>DISPATCH_QUEUE_PRIORITY_BACKGROUND:   QOS_CLASS_BACKGROUND<br>第二个参数flags:保留参数，以便以后使用，一般传0即可。<br>在全局队列中，同步任务是否也会发生死锁现象呢？</p>
-<h3 id="3C1_3E_u540C_u6B65-1"><a href="#3C1_3E_u540C_u6B65-1" class="headerlink" title="<1>同步"></a><1>同步</1></h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="built_in">dispatch_sync</span>(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, <span class="number">0</span>), ^&#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"sync----%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>打印结果如下：<img src="http://img.blog.csdn.net/20151213160435009" alt="全局队列 同步任务"><br>从打印结果来看，并没有死锁现象，仔细分析一下：主线程先执行第一句打印，然后执行dispatch_sync方法，往全局队列中添加一个同步任务，此时主线程应该阻塞住，等待全局队列中同步任务的执行完毕，而全局队列dispatch_sync方法并不会创建新线程，那肯定需要在主线程执行（上一篇的结论），可是主线程已经阻塞了，所以按理说此时应该发生死锁，可是为什么从打印结果看它确实是在主线程执行的同步任务，而且并没有发生死锁现象呢？<br>对应这个问题，我利用前面和上面的知识都无法解释，我在网上查了很多，都没有提到过这个问题，难道是我上面的分析有问题，按照上面的分析，那所有的同步方法，无论是自定义队列还是全局队列、主队列，同步任务都会出现死锁现象。难道我钻了牛角尖。没有找到中文的解释，我去官方文档是查，也一无所获，最后我无意的点进了dispatch_sync的源代码中，在该方法上面的注释中发现了这么一句话：  <strong>As an optimization, dispatch_sync() invokes the block on the current thread when possible.</strong> 大致意思是：苹果系统内部做了优化，将所有的dispatch_sync()方法中block的执行都放在当前的线程中，在我们这里也就是主线程中。这也解释了上一篇留下的一个问题：为什么所有的同步方法都在主线程中执行 ？可是，这个解释，好像并不能回答为什么这里没有发生死锁的问题？我也一直没有找到合理的解释，如果哪位有比较合理的解释，麻烦给我留言。<br>我个人的猜测：是否会在需要执行dispatch_sync()方法时，将当前任务先挂起，只要能取出要执行的任务来就让主线程先执行，之后再来执行挂起任务。这个猜测似乎和主队列同步方法发生死锁的解释不矛盾，主队列中的任务只能前一个执行完后一个才能取出来执行，所以在主队列中后面的同步任务无法取出来，自然会发生死锁。而全局队列中，同步任务就是最前面的任务，所以能取出来，所以可以由主线程来执行，执行后主线程可以返回执行后面的操作。</p>
-</li>
-</ul>
+        <span itemprop="articleBody"><p>第一次在mac上安装mysql，首先从<a href="http://dev.mysql.com/downloads/mysql/" target="_blank" rel="external">官网</a>上下了最新版的mysql，下载的是dmg的<img src="http://img.blog.csdn.net/20151207200337702" alt="这里写图片描述">，下载完成后直接根据提示下一步下一步就完成安装了。在最后安装成功后有个弹框：大致意思是帮我设置了一个临时的密码zYRlG3Dw6h=d（随机生成的），如果要修改可以去mysql手册查询重置方法。<br>之后我设置了环境变量：<br>在命令行输入   vim ~/.bash_profile ，在打开的.bash_profile里面输入了<br>alias mysql=’/usr/local/mysql/bin/mysql’<br>alias mysqladmin=’/usr/local/mysql/bin/mysqladmin’<br>alias ls=’ls -G’<br>保存退出。完成设置后我准备登录mysql了。<br>我本以为记住这密码就可以登录了，之后再在里面修改即可。<br>于是打开命令行输入mysql -u root -p ,再根据提示输入上面密码，然后就是各种错误提示：<br>（1）Can’t connect to local MySQL server through socket ‘/tmp/mysql.sock’ (2)。<br>（2）ERROR 1045 (28000): Access denied for user ‘fs’@’localhost’ (using password: NO)。<br>之后我又通过图形化窗口连接数据库，输入密码后提示我：密码已过期。<br><a id="more"></a><br>于是乎在网上找各种解决方法，各种尝试，按网上的步骤重置密码，都没有成功，最后结合网上的步骤和mysql帮助手册才成功重置密码，在此记录一下。<br><strong>解决步骤</strong>：<br>（1）首先关闭mysql服务。 在苹果-&gt;系统偏好设置-&gt;最下边点mysql 在弹出页面中 关闭mysql服务（这一步尤为重要，我前几次尝试就是没先执行这一步 才一直无法按后面步骤重启mysql）。<img src="http://img.blog.csdn.net/20151207202018644" alt="停止mysql服务"><br>（2）在命令行输入 cd /usr/local/mysql/bin/定位到bin目录下，再输入sudo su切换到超级管理员的身份。再输入<br>./mysqld_safe –skip-grant-tables &amp; 命令禁止mysql密码验证的功能。<img src="http://img.blog.csdn.net/20151207202622016" alt="禁止密码验证"><br>（3）新开启一个命令窗口，在命令行输入mysql后，可以直接进入mysql了。这是需要重置密码。<br>       <1>先尝试输入：ALTER USER ‘root’@’localhost’ IDENTIFIED BY ‘123’，如果提示Query OK则表明密码成功修改为123。如果提示这个错误You are using MySQL as an anonymous user and anonymous users are not allowed to change passwords。则尝试输入：UPDATE mysql.user SET authentication_string = PASSWORD(‘123’) WHERE User = ‘root’ AND Host = ‘localhost’;（后面一般都会成功）。<br>       <2>再输入FLUSH PRIVILEGES;之后输入exit退出mysql后，就可以用 你设置的密码登录了。<br>下面是我重置密码时走的弯路：我按照官网<a href="http://dev.mysql.com/doc/refman/5.7/en/resetting-permissions.html" target="_blank" rel="external">使用手册</a>中的<strong>Resetting the Root Password: Unix and Unix-Like Systems</strong>这个目录下的步骤一步一步的来，在输入<strong>ALTER USER ‘root’@’localhost’ IDENTIFIED BY ‘123’;</strong>后始终报这个错<br>ERROR 1131 (42000): You are using MySQL as an anonymous user and anonymous users are not allowed to change passwords。我网上查了都没有一个很好地解释。最后我看到后面有这么一句：If the ALTER USER statement fails to reset the password, try repeating the procedure using the following statements to modify the user table directly：我抱着试试的态度将其对应的语句（就是上面update语句和flush命令）输入后提示我Query OK，此时我仿佛看到了希望，之后立刻退出mysql，用root和123登录，果然成功进入mysql。<img src="http://img.blog.csdn.net/20151207205508233" alt="最后的尝试"></2></1></p>
 </span>
       
     </div>
@@ -283,11 +265,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/GCD/" rel="tag">#GCD</a>
+            <a href="/tags/MAC/" rel="tag">#MAC</a>
           
-            <a href="/tags/主队列/" rel="tag">#主队列</a>
-          
-            <a href="/tags/全局队列/" rel="tag">#全局队列</a>
+            <a href="/tags/MySql/" rel="tag">#MySql</a>
           
         </div>
       
@@ -296,12 +276,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2015/12/21/GCD编程中串行 并行 同步 异步的执行顺序/" rel="next" title="GCD编程中串行 并行 同步 异步的执行顺序">
+                <i class="fa fa-chevron-left"></i> GCD编程中串行 并行 同步 异步的执行顺序
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/12/21/GCD编程中串行 并行 同步 异步的执行顺序/" rel="prev" title="GCD编程中串行 并行 同步 异步的执行顺序">
-                GCD编程中串行 并行 同步 异步的执行顺序 <i class="fa fa-chevron-right"></i>
+              <a href="/2015/12/24/iOS开发中copy和retain的区别/" rel="prev" title="iOS开发中copy和retain的区别">
+                iOS开发中copy和retain的区别 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -329,8 +313,8 @@
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/12/21/GCD主队列和全局队列/"
-           data-title="GCD主队列和全局队列" data-url="http://yoursite.com/2015/12/21/GCD主队列和全局队列/">
+      <div class="ds-thread" data-thread-key="2015/12/24/MAC下安装MySql遇到的问题/"
+           data-title="MAC下安装MySql遇到的问题" data-url="http://yoursite.com/2015/12/24/MAC下安装MySql遇到的问题/">
       </div>
     
   </div>
@@ -446,7 +430,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#uFF081_uFF09_u4E3B_u961F_u5217"><span class="nav-number">1.</span> <span class="nav-text">（1）主队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3C1_3E_u540C_u6B65"><span class="nav-number">1.1.</span> <span class="nav-text">同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3C2_3E_u5F02_u6B65"><span class="nav-number">1.2.</span> <span class="nav-text">异步</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uFF082_uFF09_u5168_u5C40_u961F_u5217"><span class="nav-number">2.</span> <span class="nav-text">（2）全局队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3C1_3E_u540C_u6B65-1"><span class="nav-number">2.1.</span> <span class="nav-text">同步</span></a></li></ol></li></ol></div>
+              <p class="post-toc-empty">此文章未包含目录</p>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
