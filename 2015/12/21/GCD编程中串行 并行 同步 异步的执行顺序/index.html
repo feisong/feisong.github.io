@@ -65,7 +65,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20151213140542249">
 <meta property="og:image" content="http://img.blog.csdn.net/20151213142924337">
 <meta property="og:image" content="http://img.blog.csdn.net/20151213144311387">
-<meta property="og:updated_time" content="2015-12-21T12:35:44.000Z">
+<meta property="og:updated_time" content="2015-12-25T13:24:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GCD编程中串行 并行 同步 异步的执行顺序">
 <meta name="twitter:description" content="串行队列、并行队列、同步、异步是gcd编程中四个非常重要的概念，它们的组合会产生多种不同的执行顺序，在本文，我主要通过代码来罗列一下所有的可能产生的结果，并根据执行结果总结一下gcd编程的一些特点。">
@@ -277,7 +277,7 @@
 <p>打印结果如下：<img src="http://img.blog.csdn.net/20151213142924337" alt="并行队列中先异步再同步"><br>上面代码创建了一个并行队列，然后往并行队列中添加了10个异步任务和10个同步任务，上面只是某一次的打印结果，每次的打印结果都不一样，从打印结果可以看出：由于是并行队列，会开启多个子线程执行异步任务，所以异步任务的打印结果是无序的，而同步任务由于都是在主线程中执行，所有总体是有序的。而且同步与异步任务是交叉着执行完毕的。</p>
 <h2 id="uFF088_uFF09_u5E76_u884C_u961F_u5217_u4E2D_u5148_u540C_u6B65_u518D_u5F02_u6B65"><a href="#uFF088_uFF09_u5E76_u884C_u961F_u5217_u4E2D_u5148_u540C_u6B65_u518D_u5F02_u6B65" class="headerlink" title="（8）并行队列中先同步再异步"></a>（8）并行队列中先同步再异步</h2><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)test8&#123;</span><br><span class="line">    <span class="built_in">dispatch_queue_t</span> q = dispatch_queue_create(<span class="string">"fs"</span>, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"start--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">dispatch_sync</span>(q, ^&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"sync--%@---%d"</span>,[<span class="built_in">NSThread</span> currentThread],i);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"end1--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">dispatch_async</span>(q, ^&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"async--%@---%d"</span>,[<span class="built_in">NSThread</span> currentThread],i);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"end2--%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>打印结果如下：<img src="http://img.blog.csdn.net/20151213144311387" alt="并行队列中先同步再异步"><br>上面代码创建了一个并行队列，然后往并行队列中添加了10个同步任务和10个异步任务，每次的打印结果也不一定一样，从打印结果可以看出：都是先有序的执行完同步任务，再无序的执行异步任务。没有交叉执行完的想象，原因在于先添加的同步任务，没添加一个同步任务会堵塞主线程，等待同步任务执行完毕，所以会依次在主线程执行同步任务，for循环结束后，此时并行队列里为空，之后再往并行队列中添加了10个异步任务，此时没有堵塞主线程，主线程一直往下执行打印end2—，此时开启多个子线程来执行执行异步任务，所以执行完的顺序是未知的。<br>以上是对GCD编程中串行、并行、同步、异步的执行顺序的一个简单分析，其中还留了一个问题，这个问题将在下一篇文章中给出答案，本篇主要是自定义的串并行队列，下一篇主要分析一下ios系统给我们提供的一些队列，最常用的是主队列和全局队列。</p>
-</span>
+<div class="ds-recent-visitors" data-num-items="28" data-avatar-size="42" id="ds-recent-visitors"></div></span>
       
     </div>
 
@@ -484,16 +484,8 @@
   <span class="author" itemprop="copyrightHolder">feisong</span>
 </div>
 
-<div class="powered-by">
-  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
-</div>
 
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
-  </a>
-</div>
+
 
 
 

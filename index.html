@@ -297,6 +297,271 @@
 
 
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/12/24/MAC下安装MySql遇到的问题/" itemprop="url">
+                  MAC下安装MySql遇到的问题
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2015-12-24T21:20:36+08:00" content="2015-12-24">
+              2015-12-24
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/12/24/MAC下安装MySql遇到的问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/24/MAC下安装MySql遇到的问题/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>第一次在mac上安装mysql，首先从<a href="http://dev.mysql.com/downloads/mysql/">官网</a>上下了最新版的mysql，下载的是dmg的<img src="http://img.blog.csdn.net/20151207200337702" alt="这里写图片描述">，下载完成后直接根据提示下一步下一步就完成安装了。在最后安装成功后有个弹框：大致意思是帮我设置了一个临时的密码zYRlG3Dw6h=d（随机生成的），如果要修改可以去mysql手册查询重置方法。<br>之后我设置了环境变量：<br>在命令行输入   vim ~/.bash_profile ，在打开的.bash_profile里面输入了<br>alias mysql=’/usr/local/mysql/bin/mysql’<br>alias mysqladmin=’/usr/local/mysql/bin/mysqladmin’<br>alias ls=’ls -G’<br>保存退出。完成设置后我准备登录mysql了。<br>我本以为记住这密码就可以登录了，之后再在里面修改即可。<br>于是打开命令行输入mysql -u root -p ,再根据提示输入上面密码，然后就是各种错误提示：<br>（1）Can’t connect to local MySQL server through socket ‘/tmp/mysql.sock’ (2)。<br>（2）ERROR 1045 (28000): Access denied for user ‘fs’@’localhost’ (using password: NO)。<br>之后我又通过图形化窗口连接数据库，输入密码后提示我：密码已过期。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/12/24/MAC下安装MySql遇到的问题/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/12/21/GCD编程中串行 并行 同步 异步的执行顺序/" itemprop="url">
+                  GCD编程中串行 并行 同步 异步的执行顺序
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2015-12-21T14:51:56+08:00" content="2015-12-21">
+              2015-12-21
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/12/21/GCD编程中串行 并行 同步 异步的执行顺序/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/21/GCD编程中串行 并行 同步 异步的执行顺序/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>串行队列、并行队列、同步、异步是gcd编程中四个非常重要的概念，它们的组合会产生多种不同的执行顺序，在本文，我主要通过代码来罗列一下所有的可能产生的结果，并根据执行结果总结一下gcd编程的一些特点。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/12/21/GCD编程中串行 并行 同步 异步的执行顺序/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/12/21/GCD主队列和全局队列/" itemprop="url">
+                  GCD主队列和全局队列
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2015-12-21T14:37:33+08:00" content="2015-12-21">
+              2015-12-21
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/12/21/GCD主队列和全局队列/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/21/GCD主队列和全局队列/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="uFF081_uFF09_u4E3B_u961F_u5217"><a href="#uFF081_uFF09_u4E3B_u961F_u5217" class="headerlink" title="（1）主队列"></a>（1）主队列</h2><p> 主队列是GCD自带的一种特殊的串行队列，放在主队列中得任务，都会放到主线程中执行。<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">dispatch_get_main_queue</span><span class="params">()</span></span></span><br></pre></td></tr></table></figure></p>
+<p>获取方式很简单，下面主要研究一下在主队列中的同步和异步问题(重点)：<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/12/21/GCD主队列和全局队列/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
 
   </section>
 
@@ -422,16 +687,8 @@
   <span class="author" itemprop="copyrightHolder">feisong</span>
 </div>
 
-<div class="powered-by">
-  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
-</div>
 
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
-  </a>
-</div>
+
 
 
 
