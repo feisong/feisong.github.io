@@ -1,0 +1,717 @@
+<!doctype html>
+<html class="theme-next   use-motion ">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Chisel," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+
+
+
+
+<meta name="description" content="Chisel简介Chisel是Facebook开源的一款lldb调试工具，其实就是对系统lldb命令的封装，开发者可以通过简化的命令更方便的进行调试工作。开源地址：https://github.com/facebook/chisel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chisel常用命令总结">
+<meta property="og:url" content="http://yoursite.com/2016/01/11/chisel常用命令总结/index.html">
+<meta property="og:site_name" content="feisong">
+<meta property="og:description" content="Chisel简介Chisel是Facebook开源的一款lldb调试工具，其实就是对系统lldb命令的封装，开发者可以通过简化的命令更方便的进行调试工作。开源地址：https://github.com/facebook/chisel">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/921cb720jw1ezwq45pwb7j20rh0h5n31.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/921cb720jw1ezwqg7llcrj20mr0acgmk.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/921cb720jw1ezwrzbmffgg20z50ien78.gif">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/921cb720jw1ezwsmzl4xhg20z40h3b29.gif">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/921cb720jw1ezwt8idk0wg20z40h319p.gif">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/921cb720jw1ezwtfdvguig20z40h317c.gif">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/921cb720jw1ezwtmdbvedg20z40h3k5j.gif">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/921cb720jw1ezwu2hp1x6g20z50gce1s.gif">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/921cb720jw1ezwwf4og2gg20yt0g40uh.gif">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/921cb720jw1ezwwojjmq3g20yt0g4e5p.gif">
+<meta property="og:updated_time" content="2016-01-12T11:23:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chisel常用命令总结">
+<meta name="twitter:description" content="Chisel简介Chisel是Facebook开源的一款lldb调试工具，其实就是对系统lldb命令的封装，开发者可以通过简化的命令更方便的进行调试工作。开源地址：https://github.com/facebook/chisel">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post',
+    motion: true
+  };
+</script>
+
+  <title> Chisel常用命令总结 | feisong </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?293542e04e366f2cb2cc25c27e1cd71f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta custom-logo">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">feisong</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-question-circle fa-fw"></i> <br />
+            
+            留言
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Chisel常用命令总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-01-11T14:51:56+08:00" content="2016-01-11">
+              2016-01-11
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/11/chisel常用命令总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/11/chisel常用命令总结/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h1 id="Chisel_u7B80_u4ECB"><a href="#Chisel_u7B80_u4ECB" class="headerlink" title="Chisel简介"></a>Chisel简介</h1><p>Chisel是Facebook开源的一款lldb调试工具，其实就是对系统lldb命令的封装，开发者可以通过简化的命令更方便的进行调试工作。开源地址：<a href="https://github.com/facebook/chisel" target="_blank" rel="external">https://github.com/facebook/chisel</a><br><a id="more"></a></p>
+<h1 id="Chisel_u5B89_u88C5"><a href="#Chisel_u5B89_u88C5" class="headerlink" title="Chisel安装"></a>Chisel安装</h1><h2 id="Homebrew_u7684_u5B89_u88C5"><a href="#Homebrew_u7684_u5B89_u88C5" class="headerlink" title="Homebrew的安装"></a>Homebrew的安装</h2><p>Chisel的安装是通过<a href="http://brew.sh/index.html" target="_blank" rel="external">Homebrew</a>来安装的，所以安装Chisel前需要先在mac上安装Homebrew，安装命令很简单：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby <span class="operator">-e</span> <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)</span>"</span></span><br></pre></td></tr></table></figure>
+<p>拷贝该命令到terminal运行即可。</p>
+<h2 id="Chisel_u5B89_u88C5-1"><a href="#Chisel_u5B89_u88C5-1" class="headerlink" title="Chisel安装"></a>Chisel安装</h2><p>安装完Homebrew后，就可按照<a href="https://github.com/facebook/chisel" target="_blank" rel="external">github</a>上介绍Chisel的安装步骤来安装了。</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span>update</span><br><span class="line"><span class="keyword">brew </span>install chisel</span><br></pre></td></tr></table></figure>
+<p>安装截图如下：<br><img src="http://ww3.sinaimg.cn/large/921cb720jw1ezwq45pwb7j20rh0h5n31.jpg" alt="安装截图"><br>注意红色方框中的内容，大致意思是让我们将下行的命令保存到~/.lldbinit文件中，以便Xcode启动时去加载Chisel。<br>所以接下来我们就需要往~/.lldbinit中添加那一行：<br>在~/目录下可能没有.lldbinit文件，此时需要我们新建一个，并打开该文件将那一行添加到文件中：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">touch <span class="class">.lldbinit</span>  <span class="comment">//新建文件</span></span><br><span class="line">vim <span class="class">.lldbinit</span>    <span class="comment">//通过vim打开该文件</span></span><br></pre></td></tr></table></figure>
+<p>添加截图如下：<br><img src="http://ww1.sinaimg.cn/large/921cb720jw1ezwqg7llcrj20mr0acgmk.jpg" alt="添加截图"><br>添加完成后保存退出。<br>最后重启Xcode，随便打开一个项目，进入调试状态后，在console中输入help命令，如果出现以下内容，就说明Chisel安装成功了。</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">Current user-defined commands:</span><br><span class="line">  alamborder   -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> alamborder'</span><br><span class="line">  alamunborder -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> alamunborder'</span><br><span class="line">  binside      -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> binside'</span><br><span class="line">  bmessage     -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> bmessage'</span><br><span class="line">  border       -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> border'</span><br><span class="line">  caflush      -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> caflush'</span><br><span class="line">  dcomponents  -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> dcomponents'</span><br><span class="line">  fa11y        -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> fa11y'</span><br><span class="line">  flicker      -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> flicker'</span><br><span class="line">  fv           -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> fv'</span><br><span class="line">  fvc          -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> fvc'</span><br><span class="line">  hide         -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> hide'</span><br><span class="line">  mask         -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> mask'</span><br><span class="line">  pa11y        -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> pa11y'</span><br><span class="line">  pactions     -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> pactions'</span><br><span class="line">  paltrace     -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> paltrace'</span><br><span class="line">  panim        -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> panim'</span><br><span class="line">  <span class="keyword">pca</span>          -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> <span class="keyword">pca</span>'</span><br><span class="line">  pcells       -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> pcells'</span><br><span class="line">  pclass       -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> pclass'</span><br><span class="line">  pcomponents  -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> pcomponents'</span><br><span class="line">  pcurl        -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> pcurl'</span><br><span class="line">  pdata        -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> pdata'</span><br><span class="line">  pdocspath    -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> pdocspath'</span><br><span class="line">  pinternals   -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> pinternals'</span><br><span class="line">  pinvocation  -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> pinvocation'</span><br><span class="line">  pivar        -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> pivar'</span><br><span class="line">  pjson        -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> pjson'</span><br><span class="line">  pkp          -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> pkp'</span><br><span class="line">  presponder   -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> presponder'</span><br><span class="line">  ptv          -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> ptv'</span><br><span class="line">  pvc          -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> pvc'</span><br><span class="line">  pviews       -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> pviews'</span><br><span class="line">  rcomponents  -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> rcomponents'</span><br><span class="line">  show         -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> show'</span><br><span class="line">  slowanim     -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> slowanim'</span><br><span class="line">  taplog       -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> taplog'</span><br><span class="line">  unborder     -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> unborder'</span><br><span class="line">  unmask       -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> unmask'</span><br><span class="line">  unslowanim   -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> unslowanim'</span><br><span class="line">  visualize    -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> visualize'</span><br><span class="line">  vs           -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> vs'</span><br><span class="line">  wivar        -- <span class="keyword">For</span> <span class="keyword">more</span> information <span class="keyword">run</span> '<span class="keyword">help</span> wivar'</span><br></pre></td></tr></table></figure>
+<h1 id="Chisel_u5E38_u7528_u547D_u4EE4_u7684_u4F7F_u7528"><a href="#Chisel_u5E38_u7528_u547D_u4EE4_u7684_u4F7F_u7528" class="headerlink" title="Chisel常用命令的使用"></a>Chisel常用命令的使用</h1><h2 id="pviews"><a href="#pviews" class="headerlink" title="pviews"></a>pviews</h2><p>该命令是最常用的命令，主要是用来查看布局中view的层级关系的。<br><img src="http://ww4.sinaimg.cn/large/921cb720jw1ezwrzbmffgg20z50ien78.gif" alt="pviews"><br>图中command+R运行程序后，点击暂停按钮，就可进入lldb控制台，输入pivews命令查看当前布局中view的层级关系。</p>
+<h2 id="border/unborder"><a href="#border/unborder" class="headerlink" title="border/unborder"></a>border/unborder</h2><p>这两个命令分别是给要查看的view添加边框和移除边框，可以在lldb下输入help border查看具体的用法，如果我要给第二个view添加一个颜色为蓝色，宽度为2的边框，之后再用unborder命令移除，操作如下：<br><img src="http://ww4.sinaimg.cn/large/921cb720jw1ezwsmzl4xhg20z40h3b29.gif" alt="border/unborder"><br>通过help border命令知道border的使用格式如下：</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Options:</span><br><span class="line">  --<span class="built_in">color</span>/-c &lt;<span class="built_in">color</span>&gt;; Type: string; A <span class="built_in">color</span> name such as <span class="string">'red'</span>, <span class="string">'green'</span>,</span><br><span class="line">  <span class="string">'magenta'</span>, etc.</span><br><span class="line">  --<span class="variable">width</span>/-w &lt;<span class="variable">width</span>&gt;; Type: CGFloat; Desired <span class="variable">width</span> of border.</span><br><span class="line">Syntax: border [--<span class="built_in">color</span>=<span class="built_in">color</span>] [--<span class="variable">width</span>=<span class="variable">width</span>] &lt;viewOrLayer&gt;</span><br></pre></td></tr></table></figure>
+<p>其中viewOrLayer表示你要修改的view的地址，我们通过pviews命令知道，第二个view的地址是0x7feae2d605f0，所以我们输入</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">border -c blue -w <span class="number">2</span> <span class="number">0x7feae2d605f0</span>  <span class="comment">//添加边框</span></span><br><span class="line">unborder <span class="number">0x7feae2d605f0</span>   <span class="comment">//移除边框</span></span><br></pre></td></tr></table></figure>
+<p>注意我在输入每个border/unborder命令时，右侧模拟器第二个view的变化。<br>view的层级关系。</p>
+<h2 id="pinternals"><a href="#pinternals" class="headerlink" title="pinternals"></a>pinternals</h2><p>这个命令主要是打印view的内部详细信息，太具体了，有需要的可以好好研究研究：</p>
+<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">(lldb) pinternals <span class="number">0</span>x7feae2d605f0</span><br><span class="line">(UIView) $<span class="number">22</span> = &#123;</span><br><span class="line"><span class="constant">  UIResponder</span> = &#123;</span><br><span class="line"><span class="constant">    NSObject</span> = &#123;</span><br><span class="line">      isa = UIView</span><br><span class="line">    &#125;</span><br><span class="line"><span class="constant">    _hasAlternateNextResponder</span> = <span class="literal">false</span></span><br><span class="line"><span class="constant">    _hasInputAssistantItem</span> = <span class="literal">false</span></span><br><span class="line">  &#125; _constraintsExceptingSubviewAutoresizingConstraints = <span class="number">0</span>x00007feae2d5cda0 @<span class="string">"3 objects"</span></span><br><span class="line"><span class="constant">  _cachedTraitCollection</span> = nil</span><br><span class="line"><span class="constant">  _layer</span> = <span class="number">0</span>x00007feae2d13760</span><br><span class="line"><span class="constant">  _layerRetained</span> = nil</span><br><span class="line"><span class="constant">  _gestureInfo</span> = nil</span><br><span class="line"><span class="constant">  _gestureRecognizers</span> = nil</span><br><span class="line"><span class="constant">  _subviewCache</span> = <span class="number">0</span>x00007feae2e621b0 @<span class="string">"1 object"</span></span><br><span class="line"><span class="constant">  _templateLayoutView</span> = nil</span><br><span class="line"><span class="constant">  _charge</span> = <span class="number">0</span></span><br><span class="line"><span class="constant">  _tag</span> = <span class="number">0</span></span><br><span class="line"><span class="constant">  _viewDelegate</span> = nil</span><br><span class="line"><span class="constant">  _backgroundColorSystemColorName</span> = nil</span><br><span class="line"><span class="constant">  _countOfMotionEffectsInSubtree</span> = <span class="number">0</span></span><br><span class="line"><span class="constant">  _countOfTraitChangeRespondersInDirectSubtree</span> = <span class="number">0</span></span><br><span class="line"><span class="constant">  _cachedScreenScale</span> = <span class="number">0</span></span><br><span class="line"><span class="constant">  _retainCount</span> = <span class="number">14</span></span><br><span class="line"><span class="constant">  _tintAdjustmentDimmingCount</span> = <span class="number">0</span></span><br><span class="line"><span class="constant">  _shouldArchiveUIAppearanceTags</span> = <span class="literal">false</span></span><br><span class="line"><span class="constant">  _interactionTintColor</span> = nil</span><br><span class="line"><span class="constant">  _layoutMarginsGuide</span> = nil</span><br><span class="line"><span class="constant">  _minXVariable</span> = <span class="number">0</span>x00007feae2e5f540</span><br><span class="line"><span class="constant">  _minYVariable</span> = <span class="number">0</span>x00007feae2e64400</span><br><span class="line"><span class="constant">  _boundsWidthVariable</span> = <span class="number">0</span>x00007feae2d0fe70</span><br><span class="line"><span class="constant">  _boundsHeightVariable</span> = <span class="number">0</span>x00007feae2d5cf90</span><br><span class="line"><span class="constant">  _layoutEngine</span> = <span class="number">0</span>x00007feae2e69220</span><br><span class="line"><span class="constant">  _layoutDebuggingIdentifier</span> = nil</span><br><span class="line"><span class="constant">  _internalConstraints</span> = <span class="number">0</span>x00007feae2d02e00</span><br><span class="line"><span class="constant">  _continuousCornerRadius</span> = <span class="number">0</span> _countOfFocusedAncestorTrackingViewsInSubtree = <span class="number">0</span></span><br><span class="line"><span class="constant">  _semanticContentAttribute</span> = <span class="number">0</span></span><br><span class="line"><span class="constant">__presentationControllerToNotifyOnLayoutSubviews</span> = nil</span><br><span class="line"><span class="constant">  _previewingSegueTemplateStorage</span> = nil</span><br><span class="line"><span class="constant">  _contentSizeNotificationToken</span> = nil</span><br><span class="line"><span class="constant">  _readableContentGuide</span> = nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="visualize"><a href="#visualize" class="headerlink" title="visualize"></a>visualize</h2><p>可以使用mac下的预览app打开我们的图片UIImage, CGImageRef格式的图片，甚至view和layer的图片 。<br><img src="http://ww4.sinaimg.cn/large/921cb720jw1ezwt8idk0wg20z40h319p.gif" alt="visualize"></p>
+<h2 id="pclass"><a href="#pclass" class="headerlink" title="pclass"></a>pclass</h2><p>这个可以查看view的层级关系<br><img src="http://ww1.sinaimg.cn/large/921cb720jw1ezwtfdvguig20z40h317c.gif" alt="pclass"><br>图中先查看了UIView的层级关系，然后查看了一个第三方自定义的控件MMPlaceHolder的层级关系。</p>
+<h2 id="hide/show"><a href="#hide/show" class="headerlink" title="hide/show"></a>hide/show</h2><p>这两个命令顾名思义，就是显示和隐藏某个指定的view，话不多说，上图(注意模拟器中第二个view的变化)：<br><img src="http://ww1.sinaimg.cn/large/921cb720jw1ezwtmdbvedg20z40h3k5j.gif" alt="show/hide"></p>
+<h2 id="taplog"><a href="#taplog" class="headerlink" title="taplog"></a>taplog</h2><p>这个命令在你点击屏幕后，lldb打印出你敲击屏幕时接收事件的view的信息。<br><img src="http://ww1.sinaimg.cn/large/921cb720jw1ezwu2hp1x6g20z50gce1s.gif" alt="taplog"><br>注意，我是先输入的命令，然后点击了屏幕才打印出对应view的信息。</p>
+<h2 id="pvc"><a href="#pvc" class="headerlink" title="pvc"></a>pvc</h2><p>这个命令是打印当前的控制器层级，如下图，我定义了一个UINavigationController，ViewController作为它的根控制器。<br><img src="http://ww2.sinaimg.cn/large/921cb720jw1ezwwf4og2gg20yt0g40uh.gif" alt="pvc"></p>
+<h2 id="bmessage"><a href="#bmessage" class="headerlink" title="bmessage"></a>bmessage</h2><p>有这么中需求，在当前控制器没有实现某个方法（譬如：-viewWillAppear:）方法，但是我又想在该方法调用时触发中断，这个时候bmessage就派上用场了<br><img src="http://ww2.sinaimg.cn/large/921cb720jw1ezwwojjmq3g20yt0g4e5p.gif" alt="bmessage"><br>这里首先通过pvc命令查看当前控制器的层级关系，其中ViewController就是当前显示的控制器,然后通过通过controller变量指向当前控制器，再给该控制器通过bmessage设置了断点，之后让程序继续运行，当当前控制器再次被显示的时候，viewDidAppear：方法被触发，此时断点就起作用了，程序就中断了。</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(lldb) e id <span class="variable">$controller</span>=(id)<span class="number">0x7fe8ab72ab50</span> //设置controller变量指向当前ViewController</span><br><span class="line">(lldb) bmessage [<span class="variable">$controller</span> viewDidAppear:] //给当前ViewController设置断点</span><br><span class="line">Setting a breakpoint at -[UIViewController viewDidAppear:] with condition (void*)(id)<span class="variable">$rdi</span> == <span class="number">0x00007fe8ab72ab50</span></span><br><span class="line">Breakpoint <span class="number">1</span>: <span class="keyword">where</span> = UIKit`-[UIViewController viewDidAppear:], address = <span class="number">0x000000010e646d12</span></span><br></pre></td></tr></table></figure>
+<p>以上是Chisel最常用的一些命令，其他的在某些特定场景也有用到，我也不是很了解，所以就不敢轻易写了，以下是两篇很好地参考资料，第二篇是第一篇的中文译文。</p>
+<p></p><h1>参考</h1><br>1、<em><a href="https://www.objc.io/issues/19-debugging/lldb-debugging/" target="_blank" rel="external">Dancing in the Debugger — A Waltz with LLDB</a></em><p></p>
+<p>2、<em><a href="http://objccn.io/issue-19-2/" target="_blank" rel="external">与调试器共舞 - LLDB 的华尔兹</a></em></p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Chisel/" rel="tag">#Chisel</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/09/iOS中UIStackView相关属性理解/" rel="next" title="iOS中UIStackView相关属性理解">
+                <i class="fa fa-chevron-left"></i> iOS中UIStackView相关属性理解
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+        </div>
+
+        
+
+
+        
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/01/11/chisel常用命令总结/"
+           data-title="Chisel常用命令总结" data-url="http://yoursite.com/2016/01/11/chisel常用命令总结/">
+      </div>
+    
+  </div>
+
+
+      </div>
+
+      
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/fs.jpg" alt="feisong" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">feisong</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">ant on the way</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/feisong" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> github
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2451355424/profile?topnav=1&wvr=6&is_all=1" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/fd5245a61aea/timeline" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> 简书
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Chisel_u7B80_u4ECB"><span class="nav-number">1.</span> <span class="nav-text">Chisel简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Chisel_u5B89_u88C5"><span class="nav-number">2.</span> <span class="nav-text">Chisel安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Homebrew_u7684_u5B89_u88C5"><span class="nav-number">2.1.</span> <span class="nav-text">Homebrew的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chisel_u5B89_u88C5-1"><span class="nav-number">2.2.</span> <span class="nav-text">Chisel安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Chisel_u5E38_u7528_u547D_u4EE4_u7684_u4F7F_u7528"><span class="nav-number">3.</span> <span class="nav-text">Chisel常用命令的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pviews"><span class="nav-number">3.1.</span> <span class="nav-text">pviews</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#border/unborder"><span class="nav-number">3.2.</span> <span class="nav-text">border/unborder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pinternals"><span class="nav-number">3.3.</span> <span class="nav-text">pinternals</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#visualize"><span class="nav-number">3.4.</span> <span class="nav-text">visualize</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pclass"><span class="nav-number">3.5.</span> <span class="nav-text">pclass</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hide/show"><span class="nav-number">3.6.</span> <span class="nav-text">hide/show</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#taplog"><span class="nav-number">3.7.</span> <span class="nav-text">taplog</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pvc"><span class="nav-number">3.8.</span> <span class="nav-text">pvc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bmessage"><span class="nav-number">3.9.</span> <span class="nav-text">bmessage</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+      
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">feisong</span>
+</div>
+
+
+
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"feisong"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+
+    
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
+
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    motionMiddleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
+
+  
+  
+
+  
+  
+
+</body>
+</html>
